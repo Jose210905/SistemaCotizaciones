@@ -30,7 +30,7 @@ namespace SistemaCotizaciones.DAL
 
                             // Verificar que el producto existe y tiene stock suficiente
                             string checkProductoQuery = @"SELECT CantidadDisponible, Precio FROM Productos 
-                                                        WHERE ID = @ProductoID AND Estado = 1";
+                                                       WHERE ID = @ProductoID AND Estado = 1";
                             SqlCommand checkProductoCmd = new SqlCommand(checkProductoQuery, conn, transaction);
                             checkProductoCmd.Parameters.AddWithValue("@ProductoID", cotizacion.ProductoID);
                             SqlDataReader reader = checkProductoCmd.ExecuteReader();
@@ -62,11 +62,11 @@ namespace SistemaCotizaciones.DAL
 
                             // Insertar la cotización
                             string insertQuery = @"INSERT INTO Cotizaciones 
-                                                 (ClienteID, ProductoID, CantidadProducto, PrecioUnitario, 
-                                                  Bruto, Descuento, IVA, Total, FechaVencimiento) 
-                                                 VALUES 
-                                                 (@ClienteID, @ProductoID, @CantidadProducto, @PrecioUnitario, 
-                                                  @Bruto, @Descuento, @IVA, @Total, @FechaVencimiento)";
+                                                (ClienteID, ProductoID, CantidadProducto, PrecioUnitario, 
+                                                 Bruto, Descuento, IVA, Total, FechaVencimiento) 
+                                                VALUES 
+                                                (@ClienteID, @ProductoID, @CantidadProducto, @PrecioUnitario, 
+                                                 @Bruto, @Descuento, @IVA, @Total, @FechaVencimiento)";
 
                             SqlCommand insertCmd = new SqlCommand(insertQuery, conn, transaction);
                             insertCmd.Parameters.AddWithValue("@ClienteID", cotizacion.ClienteID);
@@ -121,11 +121,11 @@ namespace SistemaCotizaciones.DAL
                 using (SqlConnection conn = DatabaseHelper.GetConnection())
                 {
                     string query = @"SELECT c.*, cl.Nombre as NombreCliente, p.Nombre as NombreProducto, p.CodigoCabys
-                                   FROM Cotizaciones c
-                                   INNER JOIN Clientes cl ON c.ClienteID = cl.ID
-                                   INNER JOIN Productos p ON c.ProductoID = p.ID
-                                   WHERE c.ClienteID = @ClienteID AND c.Estado = 'Activa'
-                                   ORDER BY c.FechaCotizacion DESC";
+                                  FROM Cotizaciones c
+                                  INNER JOIN Clientes cl ON c.ClienteID = cl.ID
+                                  INNER JOIN Productos p ON c.ProductoID = p.ID
+                                  WHERE c.ClienteID = @ClienteID AND c.Estado = 'Activa'
+                                  ORDER BY c.FechaCotizacion DESC";
 
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@ClienteID", clienteId);
@@ -167,11 +167,11 @@ namespace SistemaCotizaciones.DAL
                 using (SqlConnection conn = DatabaseHelper.GetConnection())
                 {
                     string query = @"SELECT c.*, cl.Nombre as NombreCliente, cl.Identificacion,
-                                   p.Nombre as NombreProducto, p.CodigoCabys
-                                   FROM Cotizaciones c
-                                   INNER JOIN Clientes cl ON c.ClienteID = cl.ID
-                                   INNER JOIN Productos p ON c.ProductoID = p.ID
-                                   WHERE c.ID = @ID";
+                                  p.Nombre as NombreProducto, p.CodigoCabys
+                                  FROM Cotizaciones c
+                                  INNER JOIN Clientes cl ON c.ClienteID = cl.ID
+                                  INNER JOIN Productos p ON c.ProductoID = p.ID
+                                  WHERE c.ID = @ID";
 
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@ID", cotizacionId);
@@ -240,15 +240,15 @@ namespace SistemaCotizaciones.DAL
 
                             // Actualizar cotización
                             string updateQuery = @"UPDATE Cotizaciones SET 
-                                                 ProductoID = @ProductoID,
-                                                 CantidadProducto = @CantidadProducto,
-                                                 PrecioUnitario = @PrecioUnitario,
-                                                 Bruto = @Bruto,
-                                                 Descuento = @Descuento,
-                                                 IVA = @IVA,
-                                                 Total = @Total,
-                                                 FechaVencimiento = @FechaVencimiento
-                                                 WHERE ID = @ID";
+                                                ProductoID = @ProductoID,
+                                                CantidadProducto = @CantidadProducto,
+                                                PrecioUnitario = @PrecioUnitario,
+                                                Bruto = @Bruto,
+                                                Descuento = @Descuento,
+                                                IVA = @IVA,
+                                                Total = @Total,
+                                                FechaVencimiento = @FechaVencimiento
+                                                WHERE ID = @ID";
 
                             SqlCommand updateCmd = new SqlCommand(updateQuery, conn, transaction);
                             updateCmd.Parameters.AddWithValue("@ProductoID", cotizacion.ProductoID);
@@ -316,12 +316,12 @@ namespace SistemaCotizaciones.DAL
                 using (SqlConnection conn = DatabaseHelper.GetConnection())
                 {
                     string query = @"SELECT c.*, cl.Nombre as NombreCliente, cl.Identificacion,
-                                   p.Nombre as NombreProducto, p.CodigoCabys
-                                   FROM Cotizaciones c
-                                   INNER JOIN Clientes cl ON c.ClienteID = cl.ID
-                                   INNER JOIN Productos p ON c.ProductoID = p.ID
-                                   WHERE c.Estado = 'Activa'
-                                   ORDER BY c.FechaCotizacion DESC";
+                                  p.Nombre as NombreProducto, p.CodigoCabys
+                                  FROM Cotizaciones c
+                                  INNER JOIN Clientes cl ON c.ClienteID = cl.ID
+                                  INNER JOIN Productos p ON c.ProductoID = p.ID
+                                  WHERE c.Estado = 'Activa'
+                                  ORDER BY c.FechaCotizacion DESC";
 
                     SqlCommand cmd = new SqlCommand(query, conn);
 
@@ -363,15 +363,15 @@ namespace SistemaCotizaciones.DAL
                 using (SqlConnection conn = DatabaseHelper.GetConnection())
                 {
                     string query = @"SELECT c.*, cl.Nombre as NombreCliente, cl.Identificacion,
-                                   p.Nombre as NombreProducto, p.CodigoCabys
-                                   FROM Cotizaciones c
-                                   INNER JOIN Clientes cl ON c.ClienteID = cl.ID
-                                   INNER JOIN Productos p ON c.ProductoID = p.ID
-                                   WHERE c.Estado = 'Activa' 
-                                   AND c.FechaVencimiento IS NOT NULL
-                                   AND c.FechaVencimiento <= DATEADD(DAY, @DiasAnticipacion, GETDATE())
-                                   AND c.FechaVencimiento >= GETDATE()
-                                   ORDER BY c.FechaVencimiento";
+                                  p.Nombre as NombreProducto, p.CodigoCabys
+                                  FROM Cotizaciones c
+                                  INNER JOIN Clientes cl ON c.ClienteID = cl.ID
+                                  INNER JOIN Productos p ON c.ProductoID = p.ID
+                                  WHERE c.Estado = 'Activa' 
+                                  AND c.FechaVencimiento IS NOT NULL
+                                  AND c.FechaVencimiento <= DATEADD(DAY, @DiasAnticipacion, GETDATE())
+                                  AND c.FechaVencimiento >= GETDATE()
+                                  ORDER BY c.FechaVencimiento";
 
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@DiasAnticipacion", diasAnticipacion);
@@ -413,9 +413,9 @@ namespace SistemaCotizaciones.DAL
                 using (SqlConnection conn = DatabaseHelper.GetConnection())
                 {
                     string query = @"SELECT ISNULL(SUM(Total), 0) 
-                                   FROM Cotizaciones 
-                                   WHERE Estado = 'Vendida'
-                                   AND FechaCotizacion BETWEEN @FechaInicio AND @FechaFin";
+                                  FROM Cotizaciones 
+                                  WHERE Estado = 'Vendida'
+                                  AND FechaCotizacion BETWEEN @FechaInicio AND @FechaFin";
 
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@FechaInicio", fechaInicio);
@@ -491,6 +491,214 @@ namespace SistemaCotizaciones.DAL
                             return false;
                         }
                     }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // NUEVOS MÉTODOS AGREGADOS
+        public List<CotizacionCompleta> ObtenerTodasLasCotizacionesCompletas()
+        {
+            List<CotizacionCompleta> cotizaciones = new List<CotizacionCompleta>();
+            try
+            {
+                using (SqlConnection conn = DatabaseHelper.GetConnection())
+                {
+                    string query = @"SELECT c.*, cl.Nombre as NombreCliente, cl.Identificacion as IdentificacionCliente,
+                                  p.Nombre as NombreProducto, p.CodigoCabys, cl.TipoCliente,
+                                  p.Descripcion as DescripcionProducto, p.CantidadDisponible as StockDisponible
+                                  FROM Cotizaciones c
+                                  INNER JOIN Clientes cl ON c.ClienteID = cl.ID
+                                  INNER JOIN Productos p ON c.ProductoID = p.ID
+                                  WHERE c.Estado = 'Activa'
+                                  ORDER BY c.FechaCotizacion DESC";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        cotizaciones.Add(new CotizacionCompleta
+                        {
+                            ID = (int)reader["ID"],
+                            ClienteID = (int)reader["ClienteID"],
+                            NombreCliente = reader["NombreCliente"].ToString(),
+                            IdentificacionCliente = reader["IdentificacionCliente"].ToString(),
+                            FechaCotizacion = (DateTime)reader["FechaCotizacion"],
+                            ProductoID = (int)reader["ProductoID"],
+                            NombreProducto = reader["NombreProducto"].ToString(),
+                            CodigoCabys = reader["CodigoCabys"].ToString(),
+                            Cantidad = (int)reader["CantidadProducto"],
+                            PrecioUnitario = (decimal)reader["PrecioUnitario"],
+                            Bruto = (decimal)reader["Bruto"],
+                            Descuento = (decimal)reader["Descuento"],
+                            IVA = (decimal)reader["IVA"],
+                            Total = (decimal)reader["Total"],
+                            Estado = reader["Estado"].ToString(),
+                            FechaVencimiento = reader["FechaVencimiento"] as DateTime?,
+                            TipoCliente = reader["TipoCliente"]?.ToString(),
+                            DescripcionProducto = reader["DescripcionProducto"]?.ToString(),
+                            StockDisponible = (int)reader["StockDisponible"]
+                        });
+                    }
+                }
+            }
+            catch
+            {
+                // Log error
+            }
+            return cotizaciones;
+        }
+
+        public CotizacionCompleta ObtenerCotizacionCompleta(int cotizacionId)
+        {
+            try
+            {
+                using (SqlConnection conn = DatabaseHelper.GetConnection())
+                {
+                    string query = @"SELECT c.*, cl.Nombre as NombreCliente, cl.Identificacion as IdentificacionCliente,
+                                  p.Nombre as NombreProducto, p.CodigoCabys, cl.TipoCliente,
+                                  p.Descripcion as DescripcionProducto, p.CantidadDisponible as StockDisponible
+                                  FROM Cotizaciones c
+                                  INNER JOIN Clientes cl ON c.ClienteID = cl.ID
+                                  INNER JOIN Productos p ON c.ProductoID = p.ID
+                                  WHERE c.ID = @ID";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@ID", cotizacionId);
+
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        return new CotizacionCompleta
+                        {
+                            ID = (int)reader["ID"],
+                            ClienteID = (int)reader["ClienteID"],
+                            NombreCliente = reader["NombreCliente"].ToString(),
+                            IdentificacionCliente = reader["IdentificacionCliente"].ToString(),
+                            FechaCotizacion = (DateTime)reader["FechaCotizacion"],
+                            ProductoID = (int)reader["ProductoID"],
+                            NombreProducto = reader["NombreProducto"].ToString(),
+                            CodigoCabys = reader["CodigoCabys"].ToString(),
+                            Cantidad = (int)reader["CantidadProducto"],
+                            PrecioUnitario = (decimal)reader["PrecioUnitario"],
+                            Bruto = (decimal)reader["Bruto"],
+                            Descuento = (decimal)reader["Descuento"],
+                            IVA = (decimal)reader["IVA"],
+                            Total = (decimal)reader["Total"],
+                            Estado = reader["Estado"].ToString(),
+                            FechaVencimiento = reader["FechaVencimiento"] as DateTime?,
+                            TipoCliente = reader["TipoCliente"]?.ToString(),
+                            DescripcionProducto = reader["DescripcionProducto"]?.ToString(),
+                            StockDisponible = (int)reader["StockDisponible"]
+                        };
+                    }
+                    return null;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public List<CotizacionCompleta> ObtenerCotizacionesPorClienteCompletas(int clienteId)
+        {
+            List<CotizacionCompleta> cotizaciones = new List<CotizacionCompleta>();
+            try
+            {
+                using (SqlConnection conn = DatabaseHelper.GetConnection())
+                {
+                    string query = @"SELECT c.*, cl.Nombre as NombreCliente, cl.Identificacion as IdentificacionCliente,
+                                  p.Nombre as NombreProducto, p.CodigoCabys
+                                  FROM Cotizaciones c
+                                  INNER JOIN Clientes cl ON c.ClienteID = cl.ID
+                                  INNER JOIN Productos p ON c.ProductoID = p.ID
+                                  WHERE c.ClienteID = @ClienteID AND c.Estado = 'Activa'
+                                  ORDER BY c.FechaCotizacion DESC";
+
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@ClienteID", clienteId);
+
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        cotizaciones.Add(new CotizacionCompleta
+                        {
+                            ID = (int)reader["ID"],
+                            ClienteID = (int)reader["ClienteID"],
+                            NombreCliente = reader["NombreCliente"].ToString(),
+                            IdentificacionCliente = reader["IdentificacionCliente"].ToString(),
+                            FechaCotizacion = (DateTime)reader["FechaCotizacion"],
+                            ProductoID = (int)reader["ProductoID"],
+                            NombreProducto = reader["NombreProducto"].ToString(),
+                            CodigoCabys = reader["CodigoCabys"].ToString(),
+                            Cantidad = (int)reader["CantidadProducto"],
+                            PrecioUnitario = (decimal)reader["PrecioUnitario"],
+                            Bruto = (decimal)reader["Bruto"],
+                            Descuento = (decimal)reader["Descuento"],
+                            IVA = (decimal)reader["IVA"],
+                            Total = (decimal)reader["Total"],
+                            Estado = reader["Estado"].ToString(),
+                            FechaVencimiento = reader["FechaVencimiento"] as DateTime?
+                        });
+                    }
+                }
+            }
+            catch
+            {
+                // Log error
+            }
+            return cotizaciones;
+        }
+
+        public bool EditarCotizacion(int cotizacionId, int cantidad, decimal descuento, decimal total)
+        {
+            try
+            {
+                using (SqlConnection conn = DatabaseHelper.GetConnection())
+                {
+                    // Obtener precio unitario actual
+                    string getPrecioQuery = "SELECT PrecioUnitario FROM Cotizaciones WHERE ID = @ID";
+                    SqlCommand getPrecioCmd = new SqlCommand(getPrecioQuery, conn);
+                    getPrecioCmd.Parameters.AddWithValue("@ID", cotizacionId);
+
+                    conn.Open();
+                    decimal precioUnitario = (decimal)getPrecioCmd.ExecuteScalar();
+
+                    // Recalcular valores
+                    decimal bruto = cantidad * precioUnitario;
+                    decimal montoDescuento = (bruto * descuento) / 100;
+                    decimal subtotal = bruto - montoDescuento;
+                    decimal iva = subtotal * 0.13m;
+                    decimal totalCalculado = subtotal + iva;
+
+                    string updateQuery = @"UPDATE Cotizaciones SET 
+                                        CantidadProducto = @Cantidad,
+                                        Bruto = @Bruto,
+                                        Descuento = @Descuento,
+                                        IVA = @IVA,
+                                        Total = @Total
+                                        WHERE ID = @ID";
+
+                    SqlCommand updateCmd = new SqlCommand(updateQuery, conn);
+                    updateCmd.Parameters.AddWithValue("@Cantidad", cantidad);
+                    updateCmd.Parameters.AddWithValue("@Bruto", bruto);
+                    updateCmd.Parameters.AddWithValue("@Descuento", descuento);
+                    updateCmd.Parameters.AddWithValue("@IVA", iva);
+                    updateCmd.Parameters.AddWithValue("@Total", totalCalculado);
+                    updateCmd.Parameters.AddWithValue("@ID", cotizacionId);
+
+                    return updateCmd.ExecuteNonQuery() > 0;
                 }
             }
             catch

@@ -24,7 +24,7 @@ namespace SistemaCotizaciones.DAL
                     if (count > 0) return false; // Producto ya existe
 
                     string insertQuery = @"INSERT INTO Productos (CodigoCabys, Nombre, Descripcion, CantidadDisponible, Precio) 
-                                         VALUES (@CodigoCabys, @Nombre, @Descripcion, @CantidadDisponible, @Precio)";
+                                        VALUES (@CodigoCabys, @Nombre, @Descripcion, @CantidadDisponible, @Precio)";
 
                     SqlCommand insertCmd = new SqlCommand(insertQuery, conn);
                     insertCmd.Parameters.AddWithValue("@CodigoCabys", producto.CodigoCabys);
@@ -85,6 +85,42 @@ namespace SistemaCotizaciones.DAL
             }
         }
 
+        public Producto BuscarProductoPorID(int id)
+        {
+            try
+            {
+                using (SqlConnection conn = DatabaseHelper.GetConnection())
+                {
+                    string query = "SELECT * FROM Productos WHERE ID = @ID AND Estado = 1";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@ID", id);
+
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        return new Producto
+                        {
+                            ID = (int)reader["ID"],
+                            CodigoCabys = reader["CodigoCabys"].ToString(),
+                            Nombre = reader["Nombre"].ToString(),
+                            Descripcion = reader["Descripcion"]?.ToString(),
+                            CantidadDisponible = (int)reader["CantidadDisponible"],
+                            Precio = (decimal)reader["Precio"],
+                            Estado = (bool)reader["Estado"],
+                            FechaCreacion = (DateTime)reader["FechaCreacion"]
+                        };
+                    }
+                    return null;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public bool EditarProducto(Producto producto)
         {
             try
@@ -92,11 +128,11 @@ namespace SistemaCotizaciones.DAL
                 using (SqlConnection conn = DatabaseHelper.GetConnection())
                 {
                     string query = @"UPDATE Productos SET 
-                                   Nombre = @Nombre, 
-                                   Descripcion = @Descripcion, 
-                                   CantidadDisponible = @CantidadDisponible, 
-                                   Precio = @Precio
-                                   WHERE ID = @ID";
+                                  Nombre = @Nombre, 
+                                  Descripcion = @Descripcion, 
+                                  CantidadDisponible = @CantidadDisponible, 
+                                  Precio = @Precio
+                                  WHERE ID = @ID";
 
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@Nombre", producto.Nombre);
