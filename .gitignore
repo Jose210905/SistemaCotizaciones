@@ -1,0 +1,26 @@
+# Visual Studio
+bin/
+obj/
+*.user
+*.suo
+*.cache
+packages/
+.vs/
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+
+# ASP.NET
+[Aa]pp_[Dd]ata/
+[Bb]in/
+[Oo]bj/
+[Cc]lientbin/
+[Gg]enerated_artifacts/
+*.log
