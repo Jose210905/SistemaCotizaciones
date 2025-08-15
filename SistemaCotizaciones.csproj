@@ -374,6 +374,7 @@
     </Compile>
     <Compile Include="Models\Cliente.cs" />
     <Compile Include="Models\Cotizacion.cs" />
+    <Compile Include="Models\CotizacionCompleta.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Producto.cs" />
     <Compile Include="Models\Usuario.cs" />
